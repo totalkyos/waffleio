@@ -1,4 +1,4 @@
 waffle.io-toggle
 ================
 
-env based feature toggles
+env based feature toggles.
