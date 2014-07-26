@@ -1,6 +1,6 @@
 {
   "name": "waffle.io-toggle",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "env based feature toggles",
   "main": "dist/toggle.js",
   "dependencies": {
