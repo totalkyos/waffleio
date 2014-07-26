@@ -1,4 +1,5 @@
 toggle = require '../src/toggle'
+_ = require 'underscore'
 
 describe 'toggle', ->
   describe 'with feature undefined', ->
@@ -18,6 +19,37 @@ describe 'toggle', ->
 
     it 'should return true', ->
       toggle('feature').should.be.true
+
+  describe 'toggle with truth params', ->
+
+    it 'throws an error if truth params are not functions', ->
+      truth = 'not a function'
+
+      try
+        toggle('feature', truth)
+        # should not get here
+        true.should.equal false
+      catch e
+        e.message.should.equal 'expected a function'
+      
+    it 'returns true if all truth functions return true when compared with the value of the env', ->
+      @stub process, 'env', FT_HEADER_NAV: 'homeyer,marydavis'
+
+      truthA = (val) -> _.contains val.split(','), 'homeyer'
+      truthB = (val) -> _.contains val.split(','), 'marydavis'
+
+      actual = toggle 'header_nav', [truthA, truthB]
+      actual.should.be.true
+
+
+    it 'returns false if any truth param returns false', ->
+      @stub process, 'env', FT_HEADER_NAV: 'homeyer'
+
+      truthA = (val) -> _.contains val.split(','), 'homeyer'
+      truthB = (val) -> _.contains val.split(','), 'marydavis'
+
+      actual = toggle 'header_nav', [truthA, truthB]
+      actual.should.be.false 
 
   describe 'getToggles', ->
     beforeEach ->

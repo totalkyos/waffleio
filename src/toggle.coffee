@@ -1,7 +1,13 @@
 _ = require 'underscore'
 
-featureToggle = (feature) ->
-  process.env["FT_#{feature}".toUpperCase()] is 'true' or false
+featureToggle = (feature, truths) ->
+  if !truths or truths.length is 0
+    return process.env["FT_#{feature}".toUpperCase()] is 'true' or false
+
+  if(_.any truths, (truth) -> typeof truth isnt 'function')
+    throw new Error('expected a function')
+
+  _.every truths, (truth) -> truth process.env["FT_#{feature}".toUpperCase()]
 
 featureToggle.getToggles = ->
   toggles = {}
