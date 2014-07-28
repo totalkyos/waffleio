@@ -20,13 +20,14 @@ describe 'toggle', ->
     it 'should return true', ->
       toggle('feature').should.be.true
 
-  describe 'toggle with truth params', ->
+  describe 'with truth params', ->
 
     it 'throws an error if truth params are not functions', ->
+      @stub process, 'env', FT_FEATURE: 'true'
       truth = 'not a function'
 
       try
-        toggle('feature', truth)
+        toggle 'feature', [truth]
         # should not get here
         true.should.equal false
       catch e
@@ -50,6 +51,13 @@ describe 'toggle', ->
 
       actual = toggle 'header_nav', [truthA, truthB]
       actual.should.be.false 
+
+    it 'doesnt check truth params if env not set', ->
+      @stub process, 'env', {}
+      truth = @stub()
+      toggle 'header_nav', [truth]
+      truth.callCount.should.eql 0
+
 
   describe 'getToggles', ->
     beforeEach ->

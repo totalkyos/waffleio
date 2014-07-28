@@ -4,6 +4,9 @@ featureToggle = (feature, truths) ->
   if !truths or truths.length is 0
     return process.env["FT_#{feature}".toUpperCase()] is 'true' or false
 
+  unless process.env["FT_#{feature}".toUpperCase()]?
+    return false
+
   if(_.any truths, (truth) -> typeof truth isnt 'function')
     throw new Error('expected a function')
 
