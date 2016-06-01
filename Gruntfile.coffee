@@ -11,19 +11,21 @@ module.exports = (grunt) ->
 
   grunt.initConfig
 
-    clean: ['dist']
+    bump:
+      options:
+        commitFiles: ['-a']
+        files: ['package.json']
+        prereleaseName: 'alpha'
+        pushTo: 'origin'
 
-    watch:
-      src:
-        files: 'src/**/*.coffee'
-        tasks: ['coffee:src']
+    clean: ['dist', 'lib']
 
     coffee:
       src:
         expand: true
         cwd: 'src/'
         src: ['**/*.coffee']
-        dest: 'dist'
+        dest: 'lib'
         ext: '.js'
 
     mochaTest:
@@ -34,3 +36,14 @@ module.exports = (grunt) ->
             'coffee-script/register'
           ]
         src: ['spec/**/*.coffee']
+
+    watch:
+      src:
+        files: 'src/**/*.coffee'
+        tasks: ['coffee:src']
+      test:
+        files: [
+          'src/**/*.coffee'
+          'spec/**/*.coffee'
+        ]
+        tasks: ['mochaTest']
