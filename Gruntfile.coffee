@@ -1,9 +1,10 @@
 module.exports = (grunt) ->
 
+  grunt.loadNpmTasks 'grunt-bump'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
-  grunt.loadNpmTasks 'grunt-mocha-test'
   grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-mocha-test'
 
   grunt.registerTask 'default', ['clean', 'coffee']
 
